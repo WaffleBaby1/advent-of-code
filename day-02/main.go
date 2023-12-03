@@ -120,7 +120,7 @@ func main() {
 			fmt.Println(colonGame)
 			redPulled, bluePulled, greenPulled = gameValues(colonGame)
 			fmt.Println(redPulled, " ", bluePulled, " ", greenPulled)
-			if redPulled < redPossible || bluePulled < bluePossible || greenPulled < greenPossible {
+			if redPulled < redPossible && bluePulled < bluePossible && greenPulled < greenPossible {
 			 	fmt.Printf("Game %d is possible\n", line+1)
 				totalPossible += (line+1)
 			}
@@ -131,11 +131,12 @@ func main() {
 				appendGame := strings.Split(colonSplit[i], ",")
 				redPulled, bluePulled, greenPulled = gameValues(appendGame)
 				fmt.Println(redPulled, " ", bluePulled, " ", greenPulled)
-				if redPulled < redPossible || bluePulled < bluePossible || greenPulled < greenPossible {
+				if redPulled < redPossible && bluePulled < bluePossible && greenPulled < greenPossible {
 			 		fmt.Printf("Game %d is possible\n", line+1)
 					possible = true
 				} else {
 					possible = false
+					break
 				}
 			}	
 		}
