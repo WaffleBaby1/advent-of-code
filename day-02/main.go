@@ -102,7 +102,7 @@ func main() {
 		gameNum := strings.SplitAfter(lines[line], ":")[0]
 		fmt.Printf("Game Num is %s\n",gameNum)
 		game := strings.SplitAfter(lines[line], ":")[1]
-		fmt.Println(game)
+		// fmt.Println(game)
 		commaSplit := strings.Split(game, ",")
 		var colonGame []string
 		for j := range commaSplit {
@@ -120,22 +120,23 @@ func main() {
 			fmt.Println(colonGame)
 			redPulled, bluePulled, greenPulled = gameValues(colonGame)
 			fmt.Println(redPulled, " ", bluePulled, " ", greenPulled)
-			if redPulled < redPossible && bluePulled < bluePossible && greenPulled < greenPossible {
+			if redPulled <= redPossible && bluePulled <= bluePossible && greenPulled <= greenPossible {
 			 	fmt.Printf("Game %d is possible\n", line+1)
 				totalPossible += (line+1)
 			}
 		} else {
 			colonSplit := strings.Split(game, ";")
 			for i := range colonSplit {
-				fmt.Println(colonSplit[i])
+				// fmt.Println(colonSplit[i])
 				appendGame := strings.Split(colonSplit[i], ",")
 				redPulled, bluePulled, greenPulled = gameValues(appendGame)
 				fmt.Println(redPulled, " ", bluePulled, " ", greenPulled)
-				if redPulled < redPossible && bluePulled < bluePossible && greenPulled < greenPossible {
+				if redPulled <= redPossible && bluePulled <= bluePossible && greenPulled <= greenPossible {
 			 		fmt.Printf("Game %d is possible\n", line+1)
 					possible = true
 				} else {
 					possible = false
+					fmt.Println("Game is Impossible")
 					break
 				}
 			}	
