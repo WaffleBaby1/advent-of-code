@@ -26,9 +26,9 @@ func readLines(path string) ([]string, error) {
 	return lines, scanner.Err()
 }
 
-func checkComma(word string) (bool){
+func checkColon(word string) (bool){
 	for i := 0; i < len(word); i++ {
-		if string(word[i]) == ","{
+		if string(word[i]) == ";"{
 			return true
 		}
 	}
@@ -96,26 +96,52 @@ func main() {
 		redPulled := 0
 		greenPulled := 0
 		bluePulled := 0
+		possible := false
+		myFlag := false
 
 		gameNum := strings.SplitAfter(lines[line], ":")[0]
-		game := strings.SplitAfter(lines[line], ":")[1]
 		fmt.Printf("Game Num is %s\n",gameNum)
-		colonSplit := strings.Split(game, ";")
-		fmt.Println(colonSplit)
-		for i := range colonSplit {
-			fmt.Println(colonSplit[i])
-			appendGame := strings.Split(colonSplit[i], ",")
-			fmt.Println(appendGame)
-			redPulled, bluePulled, greenPulled = gameValues(appendGame)
-			fmt.Println(redPulled, " ", redPossible)
-			fmt.Println(bluePulled)
-			fmt.Println(greenPulled)
-
-			if redPulled < redPossible || bluePulled < bluePossible || greenPulled < greenPossible {
-			 	fmt.Printf("Game %d is not possible\n", line+1)
-				totalPossible += (line+1)
+		game := strings.SplitAfter(lines[line], ":")[1]
+		fmt.Println(game)
+		commaSplit := strings.Split(game, ",")
+		var colonGame []string
+		for j := range commaSplit {
+			if checkColon(commaSplit[j]) {
+				semiSplit := strings.Split(commaSplit[j], ";")
+				for k := range semiSplit {
+					colonGame = append(colonGame, semiSplit[k])
+				}
+			} else {
+				colonGame = append(colonGame, commaSplit[j])
 			}
 		}
+
+		if myFlag {
+			fmt.Println(colonGame)
+			redPulled, bluePulled, greenPulled = gameValues(colonGame)
+			fmt.Println(redPulled, " ", bluePulled, " ", greenPulled)
+			if redPulled < redPossible || bluePulled < bluePossible || greenPulled < greenPossible {
+			 	fmt.Printf("Game %d is possible\n", line+1)
+				totalPossible += (line+1)
+			}
+		} else {
+			colonSplit := strings.Split(game, ";")
+			for i := range colonSplit {
+				fmt.Println(colonSplit[i])
+				appendGame := strings.Split(colonSplit[i], ",")
+				redPulled, bluePulled, greenPulled = gameValues(appendGame)
+				fmt.Println(redPulled, " ", bluePulled, " ", greenPulled)
+				if redPulled < redPossible || bluePulled < bluePossible || greenPulled < greenPossible {
+			 		fmt.Printf("Game %d is possible\n", line+1)
+					possible = true
+				} else {
+					possible = false
+				}
+			}	
+		}
+	if possible{
+		totalPossible += (line+1)
+	}
 	}
 	 fmt.Printf("Total possible is: %d\n", totalPossible)
 }
